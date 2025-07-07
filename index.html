@@ -4,9 +4,98 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=swap');
+    </style>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div class="container">
+      <div class="text-box">
+        <h1 class="heading-primary">Book library</h1>
+        <p class="text-paragraph">
+          Use the button below to add to your library and watch your collection
+          grow
+        </p>
+        <button type="button" class="btn-new-book">New Book</button>
+      </div>
+      <div class="list-box">
+        <ul class="ul-list">
+          <!-- <li class="list-item">
+            <p class="card-book-name">DON KIHOT</p>
+            <p class="card-book-autor">VILIAM TEL</p>
+            <p class="card-page-number">50</p>
+            <div class="card-btn">
+              <button type="button" class="btn-read-un">READ</button>
+              <button type="button" class="btn-delete">Delete Book</button>
+            </div>
+          </li>-->
+        </ul>
+      </div>
+      <form class="form hidden">
+        <div class="form-box">
+          <label class="label" for="title">Title of the book:</label>
+          <input
+            class="input"
+            type="text"
+            id="title"
+            name="title"
+            placeholder="Harry Potter"
+            required
+          />
+        </div>
+        <div class="form-box">
+          <label class="label" for="author">Author:</label>
+          <input
+            class="input"
+            type="text"
+            id="author"
+            name="author"
+            placeholder="J.K Rowling"
+            required
+          />
+        </div>
+        <div class="form-box">
+          <label class="label" for="nPages">Number of pages:</label>
+          <input
+            class="input"
+            type="number"
+            id="nPages"
+            name="pages"
+            placeholder="500"
+            required
+          />
+        </div>
+        <div class="check-box">
+          <div class="mini-box">
+            <input
+              type="checkbox"
+              name="checker"
+              id="checkRead"
+              class="checkRead"
+            />
+            <label for="checkRead" class="check-label"
+              >Have you read this book?</label
+            >
+          </div>
+          <input type="submit" id="submit" class="submit" />
+        </div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="icon"
+        >
+          <path
+            class="icon"
+            fill-rule="evenodd"
+            d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </form>
+      <div class="overlay hidden"></div>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
