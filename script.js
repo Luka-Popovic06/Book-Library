@@ -49,3 +49,35 @@ autor.addEventListener('input', function (e) {
 numberOfPages.addEventListener('input', function (e) {
   nPages = e.target.value;
 });
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const newBook = bookCreator(titleB, autorB, nPages, check);
+  console.log(newBook);
+  book.push(newBook);
+  console.log(book);
+  makeList();
+});
+function makeList() {
+  ulBox.innerHTML = '';
+  book.forEach(function (book) {
+    const html = `<li class="list-item" id=${book.id}>
+            <p class="card-book-name">${book.name}</p>
+            <p class="card-book-autor">${book.autor}</p>
+            <p class="card-page-number">${book.nuberOfPages}</p>
+            <div class="card-btn">
+              <button type="button" class="btn-read-un">${
+                book.getIsCheck() ? 'Read' : 'Unread'
+              }</button>
+              <button type="button" class="btn-delete">Delete Book</button>
+            </div>`;
+    ulBox.insertAdjacentHTML('afterbegin', html);
+    form.classList.add('hidden');
+    overlay.classList.add('hidden');
+    marginTransition();
+  });
+}
+function marginTransition() {
+  textBox.style.marginTop = '50px';
+  textBox.style.transition = '0.5s';
+  textBoxBottom.style.marginBottom = '130px';
+}
