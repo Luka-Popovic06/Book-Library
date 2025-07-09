@@ -17,15 +17,20 @@ let autorB;
 let nPages;
 let check;
 
-function bookCreator(inputName, inputAutor, inputNumberOfPages, inputIsCheck) {
+function bookCreator(bookTitle, bookAutor, bookNumber, bookCheck) {
   let id = crypto.randomUUID();
-  let name = inputName;
-  let autor = inputAutor;
-  let nuberOfPages = inputNumberOfPages;
-  let check = inputIsCheck;
-  const getIsCheck = () => check;
-  const setIsCheck = value => (check = value);
-  return { id, name, autor, nuberOfPages, getIsCheck, setIsCheck };
+  let name = bookTitle;
+  let autor = bookAutor;
+  let numberOfPages = bookNumber;
+  let checked = bookCheck;
+
+  const getId = () => id;
+  const getName = () => name;
+  const getAutor = () => autor;
+  const getNumberOfPages = () => numberOfPages;
+  const getIsCheck = () => checked;
+  const setIsCheck = value => (checked = value);
+  return { getId, getName, getAutor, getNumberOfPages, getIsCheck, setIsCheck };
 }
 btnIcon.addEventListener('click', function () {
   form.reset();
@@ -52,21 +57,19 @@ numberOfPages.addEventListener('input', function (e) {
 form.addEventListener('submit', function (e) {
   e.preventDefault();
   const newBook = bookCreator(titleB, autorB, nPages, check);
-  console.log(newBook);
   book.push(newBook);
-  console.log(book);
   makeList();
 });
 function makeList() {
   ulBox.innerHTML = '';
   book.forEach(function (book) {
-    const html = `<li class="list-item" id=${book.id}>
-            <p class="card-book-name">${book.name}</p>
-            <p class="card-book-autor">${book.autor}</p>
-            <p class="card-page-number">${book.nuberOfPages}</p>
+    const html = `<li class="list-item" id=${book.getId()}>
+            <p class="card-book-name">${book.getName()}</p>
+            <p class="card-book-autor">${book.getAutor()}</p>
+            <p class="card-page-number">${book.getNumberOfPages()}</p>
             <div class="card-btn">
               <button type="button" class="btn-read-un">${
-                book.getIsCheck() ? 'Read' : 'Unread'
+                book.getIsCheck() ? 'Read' : 'Unread ❌'
               }</button>
               <button type="button" class="btn-delete">Delete Book</button>
             </div>`;
