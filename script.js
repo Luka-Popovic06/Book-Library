@@ -84,3 +84,13 @@ function marginTransition() {
   textBox.style.transition = '0.5s';
   textBoxBottom.style.marginBottom = '130px';
 }
+ulBox.addEventListener('click', function (e) {
+  const li = e.target.closest('.list-item');
+  if (e.target.closest('.btn-delete')) {
+    book = book.filter(b => b.getId() !== li.id);
+  } else if (e.target.closest('.btn-read-un')) {
+    const selectBook = book.find(b => b.getId() === li.id);
+    selectBook.setIsCheck(!selectBook.getIsCheck());
+  }
+  makeList();
+});
