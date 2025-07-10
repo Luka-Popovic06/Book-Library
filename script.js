@@ -10,13 +10,25 @@ const overlay = document.querySelector('.overlay');
 const btnIcon = document.querySelector('.icon');
 const textBox = document.querySelector('.heading-primary');
 const textBoxBottom = document.querySelector('.text-box');
-//
-let book = [];
+//napravi funkciju bookManager
+//U nju stavu array books
+//I napravi funkcije za dodavanje i brisanje iz array-a
+//let book = [];
 let titleB;
 let autorB;
 let nPages;
 let check;
 
+function bookManager() {
+  let books = [];
+  let selectBook;
+  const pushBook = book => books.push(book);
+  const getBook = () => books;
+  const deleteBook = ID => (books = books.filter(b => b.getId() !== ID));
+  const findBook = ID => (selectBook = books.find(b => b.getId() === ID));
+  const getSelectBook = () => selectBook;
+  return { pushBook, getBook, deleteBook, findBook, getSelectBook };
+}
 function bookCreator(bookTitle, bookAutor, bookNumber, bookCheck) {
   let id = crypto.randomUUID();
   let name = bookTitle;
@@ -57,12 +69,16 @@ numberOfPages.addEventListener('input', function (e) {
 form.addEventListener('submit', function (e) {
   e.preventDefault();
   const newBook = bookCreator(titleB, autorB, nPages, check);
-  book.push(newBook);
-  makeList();
+  const book = bookManager();
+  //console.log(book);
+  book.pushBook(newBook);
+  const king = book.getBook();
+  //book.push(newBook);
+  makeList(king);
 });
-function makeList() {
+function makeList(books) {
   ulBox.innerHTML = '';
-  book.forEach(function (book) {
+  books.forEach(function (book) {
     const html = `<li class="list-item" id=${book.getId()}>
             <p class="card-book-name">${book.getName()}</p>
             <p class="card-book-autor">${book.getAutor()}</p>
@@ -79,6 +95,7 @@ function makeList() {
     marginTransition();
   });
 }
+
 function marginTransition() {
   textBox.style.marginTop = '50px';
   textBox.style.transition = '0.5s';
@@ -86,11 +103,13 @@ function marginTransition() {
 }
 ulBox.addEventListener('click', function (e) {
   const li = e.target.closest('.list-item');
+  const book = bookManager();
   if (e.target.closest('.btn-delete')) {
-    book = book.filter(b => b.getId() !== li.id);
+    book.deleteBook(li.id);
   } else if (e.target.closest('.btn-read-un')) {
-    const selectBook = book.find(b => b.getId() === li.id);
-    selectBook.setIsCheck(!selectBook.getIsCheck());
+    //const selectBook = findBook.find(b => b.getId() === li.id);
+    const booker = book.findBook(li.id);
+    booker.setIsCheck(!booker.getIsCheck());
   }
   makeList();
 });
