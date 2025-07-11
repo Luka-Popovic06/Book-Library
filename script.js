@@ -10,24 +10,24 @@ const overlay = document.querySelector('.overlay');
 const btnIcon = document.querySelector('.icon');
 const textBox = document.querySelector('.heading-primary');
 const textBoxBottom = document.querySelector('.text-box');
-//napravi funkciju bookManager
-//U nju stavu array books
-//I napravi funkcije za dodavanje i brisanje iz array-a
-//let book = [];
+
 let titleB;
 let autorB;
 let nPages;
 let check;
-
+const manager = bookManager();
 function bookManager() {
   let books = [];
-  let selectBook;
   const pushBook = book => books.push(book);
   const getBook = () => books;
   const deleteBook = ID => (books = books.filter(b => b.getId() !== ID));
-  const findBook = ID => (selectBook = books.find(b => b.getId() === ID));
-  const getSelectBook = () => selectBook;
-  return { pushBook, getBook, deleteBook, findBook, getSelectBook };
+  //
+  function findBook(id) {
+    const selectBook = books.find(b => b.getId() === id);
+    selectBook.setIsCheck(!selectBook.getIsCheck());
+  }
+
+  return { pushBook, getBook, deleteBook, findBook };
 }
 function bookCreator(bookTitle, bookAutor, bookNumber, bookCheck) {
   let id = crypto.randomUUID();
@@ -54,6 +54,7 @@ checkRead.addEventListener('input', function (e) {
 });
 btnNewBook.addEventListener('click', function () {
   form.reset();
+  check = false;
   form.classList.remove('hidden');
   overlay.classList.remove('hidden');
 });
@@ -68,13 +69,11 @@ numberOfPages.addEventListener('input', function (e) {
 });
 form.addEventListener('submit', function (e) {
   e.preventDefault();
+  console.log(check);
   const newBook = bookCreator(titleB, autorB, nPages, check);
-  const book = bookManager();
-  //console.log(book);
-  book.pushBook(newBook);
-  const king = book.getBook();
-  //book.push(newBook);
-  makeList(king);
+  manager.pushBook(newBook);
+  const books = manager.getBook();
+  makeList(books);
 });
 function makeList(books) {
   ulBox.innerHTML = '';
@@ -103,13 +102,11 @@ function marginTransition() {
 }
 ulBox.addEventListener('click', function (e) {
   const li = e.target.closest('.list-item');
-  const book = bookManager();
   if (e.target.closest('.btn-delete')) {
-    book.deleteBook(li.id);
+    manager.deleteBook(li.id);
   } else if (e.target.closest('.btn-read-un')) {
-    //const selectBook = findBook.find(b => b.getId() === li.id);
-    const booker = book.findBook(li.id);
-    booker.setIsCheck(!booker.getIsCheck());
+    manager.findBook(li.id);
   }
-  makeList();
+  const books = manager.getBook();
+  makeList(books);
 });
