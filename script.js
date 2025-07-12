@@ -42,7 +42,21 @@ function bookCreator(bookTitle, bookAutor, bookNumber, bookCheck) {
   const getNumberOfPages = () => numberOfPages;
   const getIsCheck = () => checked;
   const setIsCheck = value => (checked = value);
-  return { getId, getName, getAutor, getNumberOfPages, getIsCheck, setIsCheck };
+  //
+  const updateName = newName => (name = newName);
+  const updateAutor = newAutor => (autor = newAutor);
+  const updateNumberOfPages = newNumber => (numberOfPages = newNumber);
+  return {
+    getId,
+    getName,
+    getAutor,
+    getNumberOfPages,
+    getIsCheck,
+    setIsCheck,
+    updateName,
+    updateAutor,
+    updateNumberOfPages,
+  };
 }
 btnIcon.addEventListener('click', function () {
   form.reset();
@@ -84,9 +98,10 @@ function makeList(books) {
             <p class="card-page-number">${book.getNumberOfPages()}</p>
             <div class="card-btn">
               <button type="button" class="btn-read-un">${
-                book.getIsCheck() ? 'Read' : 'Unread ❌'
+                book.getIsCheck() ? 'Read ✔️' : 'Unread ❌'
               }</button>
               <button type="button" class="btn-delete">Delete Book</button>
+              <button type="button" class="btn-edit">Edit</button>
             </div>`;
     ulBox.insertAdjacentHTML('afterbegin', html);
     form.classList.add('hidden');
@@ -102,11 +117,64 @@ function marginTransition() {
 }
 ulBox.addEventListener('click', function (e) {
   const li = e.target.closest('.list-item');
+  const books = manager.getBook();
   if (e.target.closest('.btn-delete')) {
     manager.deleteBook(li.id);
+    makeList(books);
   } else if (e.target.closest('.btn-read-un')) {
     manager.findBook(li.id);
+    makeList(books);
+  } else if (e.target.closest('.btn-edit')) {
+    editMode(books);
+  } else if (e.target.closest('.finish-edit')) {
+    //const boo = manager.getBook();
+    //const boo = books.find(b => b.getId() === li.id);
+    const creator = bookCreator(titleB, autorB, nPages, check);
+    const nameInput = li.querySelector('.input-mode-edit-name');
+    const autorInput = li.querySelector('.input-mode-edit-autor');
+    const pagesInput = li.querySelector('.input-mode-edit-pagesnumber');
+
+    creator.updateName(nameInput.value);
+    creator.updateAutor(autorInput.value);
+    creator.updateNumberOfPages(pagesInput.value);
+
+    makeList(books);
   }
-  const books = manager.getBook();
-  makeList(books);
 });
+function editMode(books) {
+  ulBox.innerHTML = '';
+  books.forEach(function (book) {
+    const html = `<li class="list-item" id=${book.getId()}>
+            <input type="text" class="input-mode-edit-name">
+            <input type="text" class="input-mode-edit-autor">
+            <input type="text" class="input-mode-edit-pagesnumber">
+            <div class="card-btn">
+              <button type="button" class="btn-read-un">${
+                book.getIsCheck() ? 'Read ✔️' : 'Unread ❌'
+              }</button>
+              <button type="button" class="btn-delete">Delete Book</button>
+              <button type="button" class="finish-edit">Finish Editing</button>
+            </div>`;
+    ulBox.insertAdjacentHTML('afterbegin', html);
+    //
+    const name = document.querySelector('.input-mode-edit-name');
+    const autor = document.querySelector('.input-mode-edit-autor');
+    const numberOfPages = document.querySelector(
+      '.input-mode-edit-pagesnumber'
+    );
+    name.value = `${book.getName()}`;
+    autor.value = `${book.getAutor()}`;
+    numberOfPages.value = `${book.getNumberOfPages()}`;
+
+    //const btnFinish = document.querySelector('.finish-edit');
+    //btnFinish.addEventListener('click', makeList(books));
+    form.classList.add('hidden');
+    overlay.classList.add('hidden');
+    marginTransition();
+  });
+}
+/*dodati jos jedno dugme na knjigu edit
+kad se to dugme stisne na mesto gde su bili naslov... treba da se pojave inputi koji ce imati te vrednosti
+Nakon sto se edit stisne to dugme edit treba da se pretvori u dugme finishEditing
+A kad se ono stisne knjiga se vraca na staro sa novim vrednostima
+ */
