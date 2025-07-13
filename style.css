@@ -73,7 +73,8 @@ body {
 .card-book-autor {
   font-size: 17px;
 }
-.btn-read-un {
+.btn-read-un,
+.btn-read_un {
   background-color: #002135;
   color: #fff;
   border: none;
@@ -86,7 +87,8 @@ body {
 .card-btn {
   margin-top: 20px;
 }
-.btn-delete {
+.btn-delete,
+.delete-btn {
   background-color: #002135;
   color: #fff;
   border: none;
